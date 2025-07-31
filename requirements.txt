@@ -1,0 +1,184 @@
+# FRANKA ROS2公式統合強化学習システム - Python依存関係
+# Python Dependencies for FRANKA ROS2 Reinforcement Learning System
+
+# ==========================================
+# コア依存関係 (Core Dependencies)
+# ==========================================
+
+# ROS2 Python クライアントライブラリ
+rclpy>=3.0.0
+
+# 数値計算・科学計算
+numpy>=1.21.0
+scipy>=1.7.0
+matplotlib>=3.5.0
+
+# データ処理
+pandas>=1.5.0
+seaborn>=0.11.0
+
+# 設定管理
+PyYAML>=6.0
+jsonschema>=4.0.0
+
+# ==========================================
+# 強化学習関連 (Reinforcement Learning)
+# ==========================================
+
+# PyTorch (CUDA対応版の場合は適切なバージョンを選択)
+torch>=1.12.0
+torchvision>=0.13.0
+torchaudio>=0.12.0
+
+# 強化学習フレームワーク
+stable-baselines3>=1.6.0
+gymnasium>=0.26.0  # OpenAI Gym後継
+sb3-contrib>=1.6.0
+
+# 追加RL補助ライブラリ
+tensorboard>=2.10.0
+wandb>=0.13.0  # 実験管理（オプション）
+
+# ==========================================
+# ロボティクス・制御系 (Robotics & Control)
+# ==========================================
+
+# コンピュータービジョン
+opencv-python>=4.6.0
+# opencv-contrib-python>=4.6.0  # 追加機能が必要な場合
+
+# 画像処理
+Pillow>=9.0.0
+scikit-image>=0.19.0
+
+# 制御・最適化
+cvxpy>=1.2.0  # 最適化問題
+casadi>=3.5.0  # 非線形最適化（オプション）
+
+# ==========================================
+# MoveIt2統合 (MoveIt2 Integration)
+# ==========================================
+
+# MoveIt2 Python API（ROS2パッケージとして別途インストール必要）
+# これらはapt installまたはcolcon buildで取得
+# moveit-commander  # ROS2版
+# moveit-core       # ROS2版
+
+# 幾何学計算
+transforms3d>=0.4.0
+spatial-math>=1.0.0
+
+# ==========================================
+# データ管理・品質保証 (Data Management & QA)
+# ==========================================
+
+# ファイル監視（汚染防止システム用）
+watchdog>=2.1.0
+
+# テスト・品質保証
+pytest>=7.0.0
+pytest-cov>=4.0.0
+flake8>=5.0.0
+black>=22.0.0
+isort>=5.10.0
+
+# 静的解析
+mypy>=0.991
+pylint>=2.15.0
+
+# ==========================================
+# システム統合・ユーティリティ (System Integration)
+# ==========================================
+
+# 非同期処理
+asyncio-mqtt>=0.11.0  # MQTT通信（必要に応じて）
+aiofiles>=0.8.0
+
+# プロセス管理
+psutil>=5.9.0
+
+# ログ管理
+colorlog>=6.7.0
+rich>=12.0.0  # リッチなコンソール出力
+
+# HTTP通信（API連携用）
+requests>=2.28.0
+aiohttp>=3.8.0
+
+# ==========================================
+# Gazeboシミュレーション関連 (Gazebo Simulation)
+# ==========================================
+
+# 3D計算・メッシュ処理
+trimesh>=3.15.0
+open3d>=0.15.0  # 点群処理（オプション）
+
+# 物理シミュレーション補助
+pybullet>=3.2.0  # 物理計算デバッグ用（オプション）
+
+# ==========================================
+# 開発・デバッグツール (Development & Debug Tools)
+# ==========================================
+
+# Jupyter関連（開発・分析用）
+jupyter>=1.0.0
+jupyterlab>=3.4.0
+ipywidgets>=8.0.0
+
+# プロファイリング
+memory-profiler>=0.60.0
+line-profiler>=4.0.0
+
+# デバッグ
+pdbpp>=0.10.0  # 拡張デバッガー
+icecream>=2.1.0  # デバッグプリント
+
+# ==========================================
+# バージョン固定・互換性対応
+# ==========================================
+
+# 特定バージョンが必要な場合の固定
+# setuptools>=65.0.0  # ROS2互換性
+# wheel>=0.37.0
+
+# Protobuf互換性（TensorBoard用）
+protobuf>=3.20.0,<4.0.0
+
+# ==========================================
+# オプション依存関係 (Optional Dependencies)
+# ==========================================
+
+# GPU加速（NVIDIAのみ）
+# nvidia-ml-py3>=11.0.0  # GPU監視
+
+# 音声処理（必要に応じて）
+# librosa>=0.9.0
+# soundfile>=0.11.0
+
+# 自然言語処理（必要に応じて）
+# transformers>=4.20.0
+
+# 分散処理（大規模訓練用）
+# ray[default]>=2.0.0
+# redis>=4.3.0
+
+# ==========================================
+# 互換性注意事項
+# ==========================================
+
+# 注意: 以下のパッケージはROS2環境との互換性を要確認
+# - TensorFlow: ROS2との依存関係競合の可能性
+# - OpenCV: ros-humble-cv-bridgeとの整合性確認必要
+# - NumPy: ROS2パッケージとバージョン整合性確認必要
+
+# インストール後の検証推奨:
+# python -c "import rclpy, numpy, torch, cv2; print('✅ Core imports successful')"
+
+# ==========================================
+# インストール順序推奨
+# ==========================================
+
+# 1. ROS2 Humble環境構築
+# 2. pip install -r requirements.txt
+# 3. colcon build --packages-select robo_manipulation_env
+# 4. 動作確認テスト実行
