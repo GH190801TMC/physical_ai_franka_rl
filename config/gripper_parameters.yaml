@@ -1,0 +1,184 @@
+# Gripper Parameters Configuration
+# FRANKA ROS2 Step 4: グリッパー制御システム設定
+# Step 1品質継承: 設定外部化、Mock禁止、実測データ評価
+
+# グリッパー制限値
+gripper_limits:
+  max_width: 0.08              # 最大開き幅 (8cm)
+  min_width: 0.0               # 最小開き幅 (0cm)
+  max_force: 140.0             # 最大把持力 (N)
+  min_force: 5.0               # 最小把持力 (N)
+  max_speed: 0.2               # 最大速度 (m/s)
+  min_speed: 0.01              # 最小速度 (m/s)
+
+# 制御パラメータ
+control_parameters:
+  default_force: 60.0          # デフォルト把持力 (N)
+  default_speed: 0.1           # デフォルト速度 (m/s)
+  position_tolerance: 0.002    # 位置許容誤差 (2mm)
+  force_tolerance: 2.0         # 力許容誤差 (2N)
+  control_frequency: 100.0     # 制御周波数 (100Hz)
+  sensor_update_rate: 1000.0   # センサー更新率 (1kHz)
+  response_timeout: 5.0        # 応答タイムアウト (秒)
+
+# 安全パラメータ
+safety_parameters:
+  emergency_force_limit: 120.0       # 緊急力制限 (N)
+  collision_detection_threshold: 50.0 # 衝突検出閾値 (N)
+  timeout_emergency_stop: 3.0        # タイムアウト緊急停止 (秒)
+  max_continuous_force_time: 5.0     # 最大連続力印加時間 (秒)
+  force_monitoring_rate: 50.0        # 力監視周波数 (Hz)
+  safety_margin: 0.005               # 安全マージン (5mm)
+
+# 把持検出パラメータ
+grasp_detection:
+  force_threshold: 15.0              # 力閾値 (N)
+  width_change_threshold: 0.005      # 開口幅変化閾値 (5mm)
+  stability_time: 0.5                # 安定時間 (秒)
+  confidence_threshold: 0.8          # 信頼度閾値
+  multi_sensor_fusion: true          # マルチセンサー融合
+  adaptive_threshold: true           # 適応的閾値
+
+# オブジェクト固有グリッパー設定
+object_specific_settings:
+  cube_objects:
+    cube_red:
+      grasp_force: 55.0              # 把持力 (N)
+      grasp_width: 0.045             # 把持幅 (m)
+      approach_speed: 0.08           # 接近速度 (m/s)
+      release_speed: 0.12            # 解放速度 (m/s)
+    cube_blue:
+      grasp_force: 65.0              # 重いオブジェクト用
+      grasp_width: 0.045
+      approach_speed: 0.06           # 慎重な接近
+      release_speed: 0.10
+    cube_green:
+      grasp_force: 50.0              # 軽いオブジェクト用
+      grasp_width: 0.045
+      approach_speed: 0.12           # 高速接近
+      release_speed: 0.15
+    cube_yellow:
+      grasp_force: 60.0              # 滑りやすい表面
+      grasp_width: 0.040             # より狭い把持
+      approach_speed: 0.05           # 非常に慎重
+      release_speed: 0.08
+
+# 動作シーケンス設定
+motion_sequences:
+  grasp_sequence:
+    pre_grasp_position: true         # プリ把持位置移動
+    approach_phase: true             # 接近フェーズ
+    contact_detection: true          # 接触検出
+    force_control_phase: true        # 力制御フェーズ
+    verification_phase: true         # 確認フェーズ
+    
+  release_sequence:
+    pre_release_check: true          # リリース前確認
+    gradual_force_reduction: true    # 段階的力減少
+    opening_phase: true              # 開口フェーズ
+    clearance_verification: true     # クリアランス確認
+    final_position: true             # 最終位置
+
+# 校正設定
+calibration_settings:
+  auto_calibration: true             # 自動校正
+  calibration_frequency: 24          # 校正頻度 (時間)
+  force_sensor_calibration: true     # 力センサー校正
+  position_sensor_calibration: true  # 位置センサー校正
+  thermal_compensation: true         # 熱補償
+  wear_compensation: true            # 摩耗補償
+
+# 診断・監視設定
+diagnostics:
+  continuous_monitoring: true        # 連続監視
+  performance_tracking: true         # 性能追跡
+  wear_detection: true              # 摩耗検出
+  failure_prediction: true          # 故障予測
+  maintenance_scheduling: true       # 保守スケジューリング
+  
+  # 診断パラメータ
+  diagnostic_parameters:
+    monitoring_interval: 0.1         # 監視間隔 (秒)
+    trend_analysis_window: 100       # 傾向分析ウィンドウ (サンプル)
+    anomaly_detection_threshold: 2.0 # 異常検出閾値 (標準偏差)
+    predictive_maintenance_horizon: 168 # 予測保守期間 (時間)
+
+# エラー処理設定
+error_handling:
+  retry_attempts: 3                  # 再試行回数
+  error_recovery_enabled: true       # エラー回復有効
+  fallback_strategies: true          # フォールバック戦略
+  error_logging_detailed: true       # 詳細エラーログ
+  
+  # エラータイプ別設定
+  error_type_handling:
+    communication_error:
+      retry_count: 5
+      retry_interval: 0.5
+      escalation_threshold: 3
+    force_limit_exceeded:
+      immediate_stop: true
+      safety_protocol: "emergency"
+      recovery_action: "reset_position"
+    position_error:
+      correction_attempts: 3
+      tolerance_relaxation: false
+      fallback_to_manual: false
+
+# FRANKA公式統合設定
+franka_integration:
+  use_franka_gripper: true           # FRANKA公式グリッパー使用
+  franka_msgs_available: false       # franka_msgs利用可能性 (環境依存)
+  simulation_fallback: true          # シミュレーションフォールバック
+  hardware_interface_timeout: 2.0    # ハードウェアインターフェースタイムアウト
+  
+  # FRANKA固有設定
+  franka_specific:
+    homing_on_startup: false         # 起動時ホーミング (実機のみ)
+    temperature_monitoring: false    # 温度監視 (実機のみ)
+    maintenance_mode: false          # メンテナンスモード
+    safety_mode_compliance: true     # 安全モード準拠
+
+# 性能最適化設定
+performance_optimization:
+  adaptive_control: true             # 適応制御
+  learning_enabled: false            # 学習機能 (未実装)
+  optimization_target: "speed_accuracy" # 最適化目標
+  resource_management: true          # リソース管理
+  
+  # 最適化パラメータ
+  optimization_parameters:
+    speed_accuracy_tradeoff: 0.7     # 速度-精度トレードオフ (0-1)
+    energy_efficiency_weight: 0.3    # エネルギー効率重み
+    wear_minimization_weight: 0.2    # 摩耗最小化重み
+    cycle_time_target: 3.0           # サイクル時間目標 (秒)
+
+# 品質保証設定
+quality_assurance:
+  step1_inheritance_check: true      # Step 1継承確認
+  mock_detection_enabled: true       # Mock検出有効
+  configuration_validation: true     # 設定検証
+  performance_benchmarking: true     # 性能ベンチマーク
+  safety_compliance_check: true      # 安全準拠確認
+  
+  # 品質メトリクス
+  quality_metrics:
+    success_rate_target: 0.95        # 成功率目標 (95%)
+    precision_target: 0.002          # 精度目標 (2mm)
+    reliability_target: 0.99         # 信頼性目標 (99%)
+    availability_target: 0.98        # 可用性目標 (98%)
+
+# ログ・デバッグ設定
+logging_debug:
+  detailed_logging: false            # 詳細ログ
+  force_data_logging: true          # 力データログ
+  position_data_logging: true       # 位置データログ
+  timing_data_logging: true         # タイミングデータログ
+  debug_visualization: false        # デバッグ可視化
+  
+  # ログレベル設定
+  log_levels:
+    general: "INFO"                  # 一般ログレベル
+    safety: "WARN"                   # 安全ログレベル
+    performance: "INFO"              # 性能ログレベル
+    diagnostics: "DEBUG"             # 診断ログレベル

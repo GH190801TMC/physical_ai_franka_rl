@@ -1,0 +1,19 @@
+trajectory_execution:
+  validation_timeout: 2.0
+  retry_delay: 1.0
+  planning_timeout: 10.0
+  
+collision_monitoring:
+  update_frequency: 50.0
+  safety_check_interval: 0.02
+  
+gazebo_validation:
+  startup_wait_time: 2.0
+  simulation_step_time: 1.0
+  pose_validation_wait: 0.5
+  
+franka_validation:
+  monitoring_interval: 0.02
+  startup_wait_time: 2.0
+  processing_simulation_time: 0.01
+  extended_validation_time: 30.0

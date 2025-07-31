@@ -1,0 +1,103 @@
+# Cube Environment Configuration for Step 3
+# Following Step 1 configuration externalization principles
+
+cube_objects:
+  cube_red:
+    position: [0.5, 0.2, 0.805]
+    size: [0.04, 0.04, 0.04]
+    mass: 0.08
+    material: 
+      color: "red"
+      ambient: [1, 0, 0, 1]
+      diffuse: [1, 0, 0, 1]
+      specular: [0.1, 0.1, 0.1, 1]
+    physics:
+      friction_mu: 0.8
+      friction_mu2: 0.8
+      inertia: 2.13e-5
+    
+  cube_blue:
+    position: [0.5, -0.2, 1.05]
+    size: [0.05, 0.05, 0.05]
+    mass: 0.1
+    material:
+      color: "blue"
+      ambient: [0, 0, 1, 1]
+      diffuse: [0, 0, 1, 1]
+      specular: [0.1, 0.1, 0.1, 1]
+    physics:
+      friction_mu: 0.8
+      friction_mu2: 0.8
+      inertia: 1.67e-4
+      
+  cube_green:
+    position: [0.4, -0.1, 0.805]
+    size: [0.04, 0.04, 0.04]
+    mass: 0.08
+    material:
+      color: "green"
+      ambient: [0, 1, 0, 1]
+      diffuse: [0, 1, 0, 1]
+      specular: [0.1, 0.1, 0.1, 1]
+    physics:
+      friction_mu: 0.8
+      friction_mu2: 0.8
+      inertia: 2.13e-5
+      
+  cube_yellow:
+    position: [0.45, 0.15, 0.805]
+    size: [0.04, 0.04, 0.04]
+    mass: 0.08
+    material:
+      color: "yellow"
+      ambient: [1, 1, 0, 1]
+      diffuse: [1, 1, 0, 1]
+      specular: [0.1, 0.1, 0.1, 1]
+    physics:
+      friction_mu: 0.8
+      friction_mu2: 0.8
+      inertia: 2.13e-5
+
+target_positions:
+  pick_zone:
+    center: [0.45, 0.05, 0.805]
+    radius: 0.15
+    description: "Primary object pick area"
+    
+  place_zone:
+    center: [0.3, -0.3, 0.801]
+    radius: 0.08
+    description: "Target placement zone"
+    marker_visible: true
+    
+  workspace_limits:
+    x_min: 0.2
+    x_max: 0.7
+    y_min: -0.4
+    y_max: 0.3
+    z_min: 0.8
+    z_max: 1.2
+
+detection_parameters:
+  camera_topic: "/camera/image_raw"  
+  point_cloud_topic: "/camera/depth_registered/points"
+  object_detection_frequency: 10.0  # Hz
+  confidence_threshold: 0.8
+  min_object_size: 0.03  # meters
+  max_object_size: 0.06  # meters
+
+ros2_integration:
+  topics:
+    object_states: "/cube_environment/object_states"
+    target_positions: "/cube_environment/target_positions"
+    detection_results: "/cube_environment/detection_results"
+  
+  qos_profiles:
+    object_states:
+      reliability: "BEST_EFFORT"
+      durability: "VOLATILE"
+      depth: 10
+    detection_results:
+      reliability: "RELIABLE"
+      durability: "TRANSIENT_LOCAL"
+      depth: 5

@@ -1,0 +1,144 @@
+# Pick&Place Parameters Configuration
+# Step 4: 基本Pick&Place制御システム設定外部化
+# Step 1品質継承: 設定外部化、ハードコード値完全除去
+
+# Pick動作パラメータ
+pick_parameters:
+  approach_distance: 0.05       # 接近距離 (5cm)
+  grasp_force: 60.0            # 把持力 (N)
+  lift_height: 0.1             # 持ち上げ高さ (10cm)
+  movement_speed: 0.1          # 移動速度 (m/s)
+  grasp_width_auto: true       # 自動把持幅調整
+  grasp_width_default: 0.045   # デフォルト把持幅 (4.5cm - cube用)
+  grasp_timeout: 5.0           # 把持タイムアウト (秒)
+  pick_approach_angle: 90.0    # 接近角度 (度) - 垂直下向き
+
+# Place動作パラメータ  
+place_parameters:
+  place_height: 0.05           # 配置高さ (5cm)
+  release_delay: 0.5           # 解放遅延 (秒)
+  retreat_distance: 0.1        # 後退距離 (10cm)
+  placement_force: 10.0        # 配置時の力制限 (N)
+  place_precision: 0.005       # 配置精度 (5mm)
+  place_timeout: 3.0           # 配置タイムアウト (秒)
+
+# 安全パラメータ
+safety_parameters:
+  max_force_threshold: 100.0   # 最大力閾値 (N)
+  emergency_stop_timeout: 2.0  # 緊急停止タイムアウト (秒)
+  collision_detection_sensitivity: 0.8  # 衝突検出感度 (0.0-1.0)
+  workspace_safety_margin: 0.02  # ワークスペース安全マージン (2cm)
+  velocity_limit_factor: 0.8   # 速度制限係数 (0.8 = 80%制限)
+  force_monitoring_rate: 50.0  # 力監視周波数 (Hz)
+
+# 成功基準
+success_criteria:
+  grasp_success_threshold: 0.9    # 把持成功率閾値 (90%)
+  place_success_threshold: 0.9    # 配置成功率閾値 (90%)
+  continuous_operation_cycles: 10  # 連続動作サイクル数
+  max_retry_attempts: 3          # 最大再試行回数
+  success_rate_window: 100       # 成功率計算ウィンドウ (試行数)
+
+# グリッパーパラメータ
+gripper_parameters:
+  max_width: 0.08              # 最大開き幅 (8cm)
+  min_width: 0.0               # 最小開き幅 (0cm)
+  default_force: 60.0          # デフォルト把持力 (N)
+  max_force: 140.0             # 最大把持力 (N)
+  default_speed: 0.1           # デフォルト速度 (m/s)
+  max_speed: 0.2               # 最大速度 (m/s)
+  grasp_epsilon_inner: 0.005   # 内側許容誤差 (5mm)
+  grasp_epsilon_outer: 0.05    # 外側許容誤差 (50mm)
+  command_timeout: 5.0         # コマンドタイムアウト (秒)
+  force_threshold: 10.0        # 把持判定力閾値 (N)
+  position_tolerance: 0.002    # 位置許容誤差 (2mm)
+
+# 安全制限値
+safety_limits:
+  max_joint_velocity: [2.6, 2.6, 2.6, 2.6, 3.1, 3.1, 3.1]  # 関節最大速度 (rad/s)
+  max_cartesian_velocity: 1.7    # カルテシアン最大速度 (m/s)
+  max_cartesian_acceleration: 13.0 # カルテシアン最大加速度 (m/s²)
+  max_force: 87.0                # 最大力 (N)
+  max_torque: [87.0, 87.0, 87.0, 87.0, 12.0, 12.0, 12.0]  # 最大トルク (Nm)
+  workspace_limits:
+    x: [-0.855, 0.855]           # X軸制限 (m)
+    y: [-0.855, 0.855]           # Y軸制限 (m)
+    z: [0.0, 1.19]               # Z軸制限 (m)
+  collision_threshold: 0.05       # 衝突検出閾値 (m)
+  emergency_stop_deceleration: 5.0 # 緊急停止減速度 (m/s²)
+
+# 監視パラメータ
+monitoring_parameters:
+  monitoring_frequency: 50.0      # 監視周波数 (Hz)
+  violation_history_size: 100     # 違反履歴サイズ
+  emergency_stop_timeout: 2.0     # 緊急停止タイムアウト (秒)
+  recovery_timeout: 10.0          # 回復タイムアウト (秒)
+  force_averaging_window: 10      # 力平均化ウィンドウ (サンプル数)
+  state_update_rate: 10.0         # 状態更新レート (Hz)
+  metrics_update_rate: 1.0        # メトリクス更新レート (Hz)
+
+# オブジェクト固有パラメータ
+object_parameters:
+  cube_objects:
+    cube_red:
+      grasp_force: 55.0          # 赤cube専用把持力
+      approach_speed: 0.08       # 接近速度
+      special_handling: false    # 特別処理なし
+    cube_blue:
+      grasp_force: 65.0          # 青cube専用把持力 (重い想定)
+      approach_speed: 0.06       # 慎重な接近
+      special_handling: false
+    cube_green:
+      grasp_force: 50.0          # 緑cube専用把持力 (軽い想定)
+      approach_speed: 0.12       # 速い接近
+      special_handling: false
+    cube_yellow:
+      grasp_force: 60.0          # 黄cube専用把持力
+      approach_speed: 0.1        # 標準接近
+      special_handling: true     # 特別処理有り (例：滑りやすい)
+
+# 軌道計画パラメータ
+trajectory_parameters:
+  planning_timeout: 5.0          # 軌道計画タイムアウト (秒)
+  planning_attempts: 10          # 計画試行回数
+  velocity_scaling: 0.8          # 速度スケーリング
+  acceleration_scaling: 0.8      # 加速度スケーリング
+  smoothness_weight: 1.0         # 滑らかさ重み
+  obstacle_clearance: 0.02       # 障害物クリアランス (2cm)
+
+# 品質保証パラメータ
+quality_assurance:
+  mock_detection_enabled: true   # Mock検出有効化
+  configuration_validation: true # 設定検証有効化
+  performance_monitoring: true   # 性能監視有効化
+  safety_checks_mandatory: true  # 安全チェック強制
+  step1_inheritance_check: true  # Step 1継承確認
+  step2_integration_check: true  # Step 2統合確認
+  step3_environment_check: true  # Step 3環境確認
+
+# ログ・デバッグ設定
+logging_parameters:
+  log_level: "INFO"              # ログレベル (DEBUG, INFO, WARN, ERROR)
+  log_to_file: true              # ファイルログ有効
+  log_pick_place_details: true   # Pick&Place詳細ログ
+  log_safety_events: true        # 安全イベントログ
+  log_performance_metrics: true  # 性能メトリクスログ
+  max_log_file_size_mb: 10       # 最大ログファイルサイズ (MB)
+  log_rotation_count: 5          # ログローテーション回数
+
+# 開発・テスト設定
+development_parameters:
+  simulation_mode: true          # シミュレーションモード
+  test_mode: false               # テストモード
+  debug_visualization: false     # デバッグ可視化
+  mock_hardware_interface: true  # ハードウェアインターフェースMock (実機なし用)
+  development_safety_override: false # 開発用安全オーバーライド (本番では false)
+
+# Step 1・2・3継承設定
+inheritance_settings:
+  step1_config_manager: true     # Step 1 ConfigManager活用
+  step1_performance_metrics: true # Step 1性能メトリクス活用
+  step2_moveit2_integration: true # Step 2 MoveIt2統合活用
+  step2_collision_monitoring: true # Step 2衝突監視活用
+  step3_object_detection: true   # Step 3オブジェクト検出活用
+  step3_environment_integration: true # Step 3環境統合活用

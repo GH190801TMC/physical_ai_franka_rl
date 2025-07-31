@@ -1,0 +1,175 @@
+# Integration Test Parameters Configuration
+# FRANKA ROS2 Step 4: Pick&Place統合テスト設定
+# Step 1品質継承: 設定外部化、Mock禁止、実測データ評価
+
+# 成功基準 (Step 4完了要件)
+success_criteria:
+  overall_success_threshold: 0.90    # 全体成功率閾値 (90%)
+  pick_success_threshold: 0.90       # 把持成功率閾値 (90%)
+  place_success_threshold: 0.90      # 配置成功率閾値 (90%)
+  max_execution_time: 30.0           # 最大実行時間 (30秒)
+  safety_violation_threshold: 0      # 安全違反許容数 (0回)
+  min_precision: 0.005               # 最小精度要求 (5mm)
+  reliability_threshold: 0.95        # 信頼性閾値 (95%)
+
+# テスト設定
+test_configuration:
+  parallel_execution: false          # 並列実行 (安全のため false)
+  detailed_logging: true             # 詳細ログ記録
+  save_test_data: true              # テストデータ保存
+  generate_reports: true            # レポート生成
+  auto_cleanup: true                # 自動クリーンアップ
+  test_timeout: 120.0               # テスト全体タイムアウト (120秒)
+  retry_failed_tests: true          # 失敗テスト再試行
+  max_retry_count: 2                # 最大再試行回数
+
+# 基本Pick&Placeテスト設定
+basic_pick_place_test:
+  target_objects: ["cube_red", "cube_blue", "cube_green", "cube_yellow"]
+  target_positions:
+    - [0.6, 0.0, 0.8]   # Position 1
+    - [0.5, 0.2, 0.8]   # Position 2  
+    - [0.5, -0.2, 0.8]  # Position 3
+    - [0.4, 0.0, 0.8]   # Position 4
+  repeat_count: 15               # 15回繰り返し (90%成功には14回成功必要)
+  expected_success_rate: 0.90    # 期待成功率
+  max_execution_time_per_test: 25.0  # テスト毎最大実行時間
+
+# 複数オブジェクトテスト設定
+multi_object_test:
+  simultaneous_object_count: 3       # 同時取り扱いオブジェクト数
+  sequence_test_enabled: true       # シーケンステスト有効
+  random_order_test: true           # ランダム順序テスト
+  object_interference_test: true    # オブジェクト干渉テスト
+  repeat_count: 10                  # 10回繰り返し
+  expected_success_rate: 0.85       # 期待成功率 (複雑なため少し低め)
+
+# 精度テスト設定
+precision_test:
+  high_precision_positions:
+    - [0.55, 0.05, 0.8]   # 高精度位置1
+    - [0.45, -0.05, 0.8]  # 高精度位置2
+    - [0.65, 0.1, 0.8]    # 高精度位置3
+  position_tolerance: 0.002         # 位置許容誤差 (2mm)
+  orientation_tolerance: 0.05       # 姿勢許容誤差 (3度)
+  repeat_count: 12                  # 12回繰り返し
+  expected_success_rate: 0.80       # 期待成功率 (高精度要求のため低め)
+
+# ストレステスト設定
+stress_test:
+  continuous_operation_cycles: 25    # 連続動作サイクル数
+  operation_speed_factor: 1.2       # 動作速度係数 (120%)
+  thermal_monitoring: true          # 熱監視
+  performance_degradation_check: true # 性能劣化確認
+  expected_success_rate: 0.85       # 期待成功率
+  max_consecutive_failures: 2       # 最大連続失敗数
+
+# 安全システムテスト設定
+safety_test:
+  force_limit_test: true            # 力制限テスト
+  workspace_limit_test: true        # ワークスペース制限テスト
+  emergency_stop_test: true         # 緊急停止テスト
+  collision_avoidance_test: true    # 衝突回避テスト
+  recovery_test: true               # 回復テスト
+  boundary_positions:               # 境界近くの位置
+    - [0.8, 0.8, 0.5]   # 境界近く1
+    - [-0.8, -0.8, 0.3] # 境界近く2
+    - [0.0, 0.0, 1.1]   # 高さ境界近く
+  expected_safety_activations: 3    # 期待される安全機能作動回数
+
+# 性能評価設定
+performance_evaluation:
+  execution_time_analysis: true     # 実行時間分析
+  success_rate_trending: true       # 成功率傾向分析
+  resource_usage_monitoring: true   # リソース使用量監視
+  comparative_analysis: true        # 比較分析
+  benchmark_comparison: true        # ベンチマーク比較
+  
+  # 性能ベンチマーク
+  performance_benchmarks:
+    pick_time_target: 8.0           # 把持時間目標 (8秒)
+    place_time_target: 6.0          # 配置時間目標 (6秒)
+    total_cycle_time_target: 20.0   # 総サイクル時間目標 (20秒)
+    cpu_usage_limit: 70.0           # CPU使用率制限 (70%)
+    memory_usage_limit: 1024.0      # メモリ使用量制限 (1GB)
+
+# データ収集設定
+data_collection:
+  collect_trajectory_data: true     # 軌道データ収集
+  collect_force_data: true          # 力データ収集
+  collect_timing_data: true         # タイミングデータ収集
+  collect_error_data: true          # エラーデータ収集
+  collect_safety_data: true         # 安全データ収集
+  
+  # データ保存設定
+  data_storage:
+    save_to_database: false         # データベース保存 (未実装)
+    save_to_files: true            # ファイル保存
+    data_compression: true         # データ圧縮
+    data_retention_days: 30        # データ保持日数
+
+# レポート生成設定
+report_generation:
+  html_report: true                 # HTMLレポート生成
+  pdf_report: false                 # PDFレポート生成 (未実装)
+  json_summary: true                # JSONサマリー生成
+  csv_data_export: true             # CSVデータエクスポート
+  
+  # レポート内容設定
+  report_sections:
+    executive_summary: true         # エグゼクティブサマリー
+    detailed_results: true          # 詳細結果
+    performance_analysis: true      # 性能分析
+    safety_analysis: true           # 安全分析
+    recommendations: true           # 推奨事項
+    appendices: true               # 付録
+
+# 環境設定
+environment_configuration:
+  gazebo_world_setup: true          # Gazebo世界設定
+  object_spawn_verification: true   # オブジェクト生成確認
+  robot_initialization_check: true  # ロボット初期化確認
+  sensor_calibration_check: true    # センサー校正確認
+  communication_test: true          # 通信テスト
+
+# 品質保証設定
+quality_assurance:
+  step1_inheritance_verification: true    # Step 1継承確認
+  step2_integration_verification: true    # Step 2統合確認
+  step3_environment_verification: true    # Step 3環境確認
+  mock_detection_active: true            # Mock検出有効
+  configuration_validation: true         # 設定検証
+  real_data_requirement: true            # 実データ要求
+
+# 失敗分析設定
+failure_analysis:
+  categorize_failures: true              # 失敗分類
+  root_cause_analysis: true              # 根本原因分析
+  failure_pattern_detection: true        # 失敗パターン検出
+  improvement_recommendations: true       # 改善推奨事項
+  
+  # 失敗カテゴリ
+  failure_categories:
+    - "planning_failure"                  # 計画失敗
+    - "execution_failure"                 # 実行失敗
+    - "perception_failure"                # 知覚失敗
+    - "gripper_failure"                   # グリッパー失敗
+    - "safety_activation"                 # 安全機能作動
+    - "communication_failure"             # 通信失敗
+    - "timeout"                          # タイムアウト
+
+# 統計分析設定
+statistical_analysis:
+  confidence_interval: 0.95              # 信頼区間 (95%)
+  significance_level: 0.05               # 有意水準 (5%)
+  sample_size_calculation: true          # サンプルサイズ計算
+  hypothesis_testing: true               # 仮説検定
+  regression_analysis: false             # 回帰分析 (未実装)
+
+# アラート設定
+alert_configuration:
+  success_rate_alert_threshold: 0.85     # 成功率アラート閾値
+  execution_time_alert_threshold: 35.0   # 実行時間アラート閾値
+  safety_violation_alert: true           # 安全違反アラート
+  system_error_alert: true               # システムエラーアラート
+  performance_degradation_alert: true    # 性能劣化アラート
